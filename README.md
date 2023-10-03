@@ -3,8 +3,13 @@ Docker Stack deployment for Grafana Loki's Promtail.
 
 ## Getting Started
 
-We provided a base configuration file for Promtail. You can find it in the `config` folder.
+You might need to create swarm-scoped overlay network called `dockerswarm_monitoring` for all the stacks to communicate if you haven't already.
 
+```sh
+$ docker network create --driver overlay --attachable dockerswarm_monitoring
+```
+
+We provided a base configuration file for Promtail. You can find it in the `config` folder.  
 Please make a copy as `configs/promtail.yaml`, make sure to change the following values:
 
 ```yml
