@@ -2,10 +2,13 @@ docker_stack_name = promtail
 
 
 it:
-	@echo "make [deploy|destroy]"
+	@echo "make [configs|deploy|destroy]"
 
-deploy:
+.PHONY: configs
+configs:
 	test -f "configs/promtail.yaml" || cp configs/promtail.base.yaml configs/promtail.yaml
+
+deploy: configs
 	docker stack deploy -c docker-compose.yml $(docker_stack_name)
 
 destroy:
