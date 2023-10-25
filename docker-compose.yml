@@ -12,19 +12,23 @@ x-default-logging: &x-default-logging
     max-file: "5"
   driver: json-file
 
+networks:
+  dockerswarm_monitoring:
+    name: dockerswarm_monitoring
+    external: true
+
 configs:
   promtail-config:
-    name: promtail-config-v1.0.yaml
     file: configs/promtail.yaml
 
 services:
   promtail:
-    image:  grafana/promtail:2.9.1
+    image:  grafana/promtail:${PROMTAIL_VERSION:-latest}
     command: -config.file=/etc/promtail/config.yml
     networks:
       - dockerswarm_monitoring
     ports:
-      - 9080:9080
+      - ${PROMTAIL_PORT:-9080}:9080
     volumes:
       - /var/log:/var/log:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
@@ -39,8 +43,3 @@ services:
       labels:
         io.prometheus.job: "promtail"
     logging: *x-default-logging
-
-networks:
-  dockerswarm_monitoring:
-    name: dockerswarm_monitoring
-    external: true
