@@ -19,6 +19,7 @@ networks:
 
 configs:
   promtail-config:
+    template_driver: golang
     file: configs/promtail.yaml
 
 services:
