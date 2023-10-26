@@ -13,8 +13,8 @@ x-default-logging: &x-default-logging
   driver: json-file
 
 networks:
-  prometheus_agents:
-    name: prometheus_agents
+  prometheus:
+    name: prometheus
     external: true
   dockerswarm_monitoring:
     name: dockerswarm_monitoring
@@ -30,8 +30,8 @@ services:
     image:  grafana/promtail:${PROMTAIL_VERSION:-latest}
     command: -config.file=/etc/promtail/config.yml
     networks:
+      - prometheus
       - dockerswarm_monitoring
-      - prometheus_agents
     ports:
       - ${PROMTAIL_PORT:-9080}:9080
     volumes:
