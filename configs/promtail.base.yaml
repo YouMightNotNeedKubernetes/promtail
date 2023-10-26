@@ -48,6 +48,8 @@ scrape_configs:
 
       - action: labelmap
         regex: __meta_docker_(container_label_.+)
+      - action: labelmap
+        regex: __meta_docker_container_label_com_(docker_stack_.+)
 
       - action: replace
         replacement: $1
