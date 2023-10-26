@@ -6,7 +6,7 @@ it:
 
 .PHONY: configs
 configs:
-	test -f "configs/promtail.yaml" || cp configs/promtail.base.yaml configs/promtail.yaml
+	test -f "configs/promtail.yaml" || cp configs/promtail.default.yaml configs/promtail.yaml
 
 deploy: configs
 	docker stack deploy -c docker-compose.yml $(docker_stack_name)
