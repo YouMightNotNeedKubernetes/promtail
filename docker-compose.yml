@@ -41,5 +41,5 @@ services:
     deploy: 
       <<: *x-deploy-policy
       labels:
-        io.prometheus.job: "promtail"
+        io.prometheus.enable: "true"
     logging: *x-default-logging
