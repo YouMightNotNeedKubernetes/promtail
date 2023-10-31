@@ -37,9 +37,7 @@ services:
     configs:
       - source: promtail.yml
         target: /etc/promtail/promtail.yml
-    depends_on:
-      - loki
-    deploy: 
+    deploy:
       <<: *x-deploy-policy
       labels:
         io.prometheus.enable: "true"
