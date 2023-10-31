@@ -37,8 +37,6 @@ services:
     configs:
       - source: promtail-config
         target: /etc/promtail/config.yml
-    depends_on:
-      - loki
     deploy: 
       <<: *x-deploy-policy
       labels:
