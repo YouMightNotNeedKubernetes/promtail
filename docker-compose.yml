@@ -18,14 +18,14 @@ networks:
     external: true
 
 configs:
-  promtail-config:
+  promtail.yml:
     template_driver: golang
-    file: configs/promtail.yaml
+    file: configs/promtail.yml
 
 services:
   promtail:
     image:  grafana/promtail:${PROMTAIL_VERSION:-latest}
-    command: -config.file=/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/promtail.yml
     networks:
       - dockerswarm_monitoring
     ports:
@@ -35,8 +35,8 @@ services:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     configs:
-      - source: promtail-config
-        target: /etc/promtail/config.yml
+      - source: promtail.yml
+        target: /etc/promtail/promtail.yml
     depends_on:
       - loki
     deploy: 
