@@ -39,15 +39,8 @@ scrape_configs:
         #   - name: label
         #     values: ["logging=promtail"]
     relabel_configs:
-      - source_labels:
-          - __meta_docker_container_label_com_docker_swarm_node_id
+      - source_labels: [__meta_docker_container_label_com_docker_swarm_node_id]
         target_label: __host__
-
-      - action: replace
-        regex: '/(.*)'
-        source_labels:
-          - __meta_docker_container_name
-        target_label: container
 
       - action: labeldrop
         regex: '__meta_docker_container_label_.+(mounts).+'
@@ -56,23 +49,33 @@ scrape_configs:
         regex: __meta_docker_(container_label_.+)
       - action: labelmap
         regex: __meta_docker_container_label_com_(docker_stack_.+)
-
-      - action: replace
-        replacement: $1
-        separator: /
-        source_labels:
-          - __meta_docker_container_label_com_docker_stack_namespace
-          - container
-        target_label: job
-
-      - action: replace
-        source_labels:
-          - __meta_docker_container_label_com_docker_stack_namespace
-        target_label: namespace
       
       - replacement: /var/log/containers/*$1/*.log
         separator: /
-        source_labels:
-          - __meta_docker_container_id
-          - container
+        source_labels: [__meta_docker_container_id, container]
         target_label: __path__
+
+      # !!! IMPORTANT !!!
+      # Kubernetes compatible relabeling.
+      - action: replace
+        source_labels: [__meta_docker_container_label_com_docker_stack_namespace]
+        target_label: namespace
+      # Reuse the "com.docker.stack.namespace" label for the "deployment" name.
+      - source_labels: [__meta_docker_container_label_com_docker_stack_namespace]
+        action: replace
+        target_label: deployment
+      # Reuse the "com.docker.swarm.service.name" label for the "pod" name.
+      - source_labels: [__meta_docker_container_label_com_docker_swarm_service_name]
+        separator: '.'
+        target_label: pod
+      # Reuse the "__meta_docker_container_name" label for the "container" name.
+      - action: replace
+        regex: '/(.*)'
+        source_labels: [__meta_docker_container_name]
+        target_label: container
+      # Reuse the "com.docker.stack.namespace" and "container" labels for the "job" name.
+      - action: replace
+        replacement: $1
+        separator: /
+        source_labels: [__meta_docker_container_label_com_docker_stack_namespace, container]
+        target_label: job
