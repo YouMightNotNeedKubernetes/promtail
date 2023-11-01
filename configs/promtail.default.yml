@@ -57,9 +57,10 @@ scrape_configs:
 
       # !!! IMPORTANT !!!
       # Kubernetes compatible relabeling.
-      # Use the "default" as Kubernetes "namespace" label.
-      - target_label: namespace
-        replacement: default
+      # Reuse the "com.docker.stack.namespace" label for the "namespace" name.
+      - action: replace
+        source_labels: [__meta_docker_container_label_com_docker_stack_namespace]
+        target_label: namespace
       # Reuse the "com.docker.stack.namespace" label for the "deployment" name.
       - source_labels: [__meta_docker_container_label_com_docker_stack_namespace]
         action: replace
