@@ -1,7 +1,7 @@
 x-deploy: &x-deploy
   mode: global
   labels:
-    io.prometheus.enable: "true"
+    io.prometheus.enabled: "true"
     io.prometheus.port: ${PROMTAIL_PORT:-9080}
   resources:
     limits:
@@ -40,8 +40,5 @@ services:
     configs:
       - source: promtail.yml
         target: /etc/promtail/promtail.yml
-    deploy:
-      <<: *x-deploy
-      labels:
-        io.prometheus.enable: "true"
+    deploy: *x-deploy
     logging: *x-logging
