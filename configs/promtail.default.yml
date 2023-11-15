@@ -37,7 +37,7 @@ scrape_configs:
         refresh_interval: 5s
         filters:
           - name: label
-            values: ["label=io.promtail.enabled=true"]
+            values: ["io.promtail.enabled=true"]
     relabel_configs:
       - source_labels: [__meta_docker_container_label_com_docker_swarm_node_id]
         target_label: __host__
