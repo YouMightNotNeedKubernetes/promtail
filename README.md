@@ -38,20 +38,3 @@ To destroy the stack, run the following command:
 ```sh
 $ make destroy
 ```
-
-## Collecting logs from other services
-
-You need to add `io.promtail.enabled=true` label to the any service you want to collect logs from.
-
-**Example `docker-compose.yml`**
-
-```yaml
-# docker-compose.yml
-services:
-  app:
-    image: app:latest
-    # ...
-    deploy:
-      labels:
-        io.promtail.enabled: "true"
-```
