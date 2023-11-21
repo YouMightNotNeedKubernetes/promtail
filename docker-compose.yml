@@ -28,7 +28,9 @@ configs:
 services:
   promtail:
     image:  grafana/promtail:${PROMTAIL_VERSION:-latest}
-    command: -config.file=/etc/promtail/promtail.yml
+    command:
+      - "-log.level=info"
+      - "-config.file=/etc/promtail/promtail.yml"
     networks:
       - dockerswarm_monitoring
     ports:
