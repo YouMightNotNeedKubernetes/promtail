@@ -6,7 +6,7 @@ Docker Stack deployment for Grafana Loki's Promtail.
 You need to have the following services deployed:
 - [dockerswarm_sd_server](https://github.com/socheatsok78/dockerswarm_sd_server)
 
-This stack leverate the `dockerswarm_sd_server` to provide access to **Docker Engine API** for **Promtail** to scrape logs from containers that running in the Docker Swarm's worker nodes.
+This stack leverage the `dockerswarm_sd_server` to provide access to **Docker Engine API** for **Promtail** to scrape logs from containers that running in the Docker Swarm's worker nodes.
 
 ## Getting Started
 
