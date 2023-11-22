@@ -52,6 +52,11 @@ scrape_configs:
       - source_labels:
         - __meta_dockerswarm_task_state
         regex: running
+        action: 
+      # Only keep containers that have a `io.promtail.enabled` label.
+      - source_labels:
+        - __meta_dockerswarm_service_label_io_promtail_enabled
+        regex: 'true'
         action: keep
 
       - action: labeldrop
