@@ -34,6 +34,9 @@ scrape_configs:
       - host: http://dockerswarm_sd_server:9093
         refresh_interval: 5s
         role: tasks
+        filters:
+          - name: desired-state
+            values: ["running"]
     pipeline_stages:
       - docker: {}
     relabel_configs:
