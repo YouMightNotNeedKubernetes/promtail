@@ -19,26 +19,38 @@ networks:
   dockerswarm_monitoring:
     name: dockerswarm_monitoring
     external: true
+  dockerswarm_sd_network:
+    name: dockerswarm_sd_network
+    external: true
 
 configs:
   promtail.yml:
     template_driver: golang
     file: configs/promtail.yml
 
+volumes:
+  promtail:
+
 services:
   promtail:
     image:  grafana/promtail:${PROMTAIL_VERSION:-latest}
+    hostname: "{{.Node.Hostname }}"
     command:
       - "-log.level=info"
       - "-config.file=/etc/promtail/promtail.yml"
     networks:
       - dockerswarm_monitoring
+      - dockerswarm_sd_network
     ports:
-      - ${PROMTAIL_PORT:-9080}:9080
+      - mode: host
+        protocol: tcp
+        published: ${PROMTAIL_PORT:-9080}
+        target: 9080
     volumes:
       - /var/log:/var/log:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - promtail:/promtail
     configs:
       - source: promtail.yml
         target: /etc/promtail/promtail.yml
